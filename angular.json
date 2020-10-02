@@ -92,6 +92,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/purple-green.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -121,8 +122,16 @@
               "devServerTarget": "fitness-training:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
-    }},
-  "defaultProject": "fitness-training"
+    }
+  },
+  "defaultProject": "fitness-training",
+  "cli": {
+    "analytics": false
+  }
 }

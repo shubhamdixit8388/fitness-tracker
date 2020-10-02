@@ -1,0 +1,31 @@
+<section>
+  <form fxLayoutGap="10px" [formGroup]="loginForm" (ngSubmit)="onSubmit()" fxLayout="column" fxLayoutAlign="center center">
+    <mat-form-field appearance="standard">
+      <mat-label>Email</mat-label>
+      <input matInput
+        type="email"
+        required
+        placeholder="Ex. abc@gmail.com"
+        name="email"
+        formControlName="email">
+      <mat-error *ngIf="loginForm.get('email').getError('required')">Email is required</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="standard">
+      <mat-label>Password</mat-label>
+      <input matInput
+        [type]="hide ? 'password' : 'text'"
+        placeholder="Ex. Shubham@123"
+        name="password"
+        formControlName="password">
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error *ngIf="loginForm.get('password').getError('required')">Wrong Password</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="accent" [disabled]="loginForm.invalid">Login</button>
+  </form>
+</section>

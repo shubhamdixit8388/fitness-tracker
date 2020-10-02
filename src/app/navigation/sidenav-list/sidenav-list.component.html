@@ -1,0 +1,18 @@
+<mat-nav-list>
+    <a mat-list-item *ngIf="!isAuth" (click)="toggle()" routerLink="/login">
+      <mat-icon aria-hidden="false" aria-label="Example home icon">login</mat-icon>
+      Login
+    </a>
+    <a mat-list-item *ngIf="!isAuth" (click)="toggle()" routerLink="/signup">
+      <mat-icon aria-hidden="false" aria-label="Example home icon">check</mat-icon>
+      Signup
+    </a>
+    <a mat-list-item *ngIf="isAuth" (click)="toggle()" routerLink="/training">
+      <mat-icon aria-hidden="false" aria-label="Example home icon">sports_handball</mat-icon>
+      Training
+    </a>
+    <a mat-list-item *ngIf="isAuth"  (click)="logout()" routerLink="/">
+      <mat-icon aria-hidden="false" aria-label="Example home icon">eject</mat-icon>
+      Logout
+    </a>
+</mat-nav-list>

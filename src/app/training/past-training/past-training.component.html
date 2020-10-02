@@ -1,0 +1,24 @@
+<div class="list-table">
+  <table>
+    <caption>Training History</caption>
+    <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Name</th>
+      <th scope="col">Duration</th>
+      <th scope="col">Calories</th>
+      <th scope="col">State</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let training of trainings">
+      <td>{{ training.date | date }}</td>
+      <td>{{ training.name }}</td>
+      <td>{{ training.duration | number }}</td>
+      <td>{{ training.calories | number }}</td>
+      <td>{{ training.state }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+

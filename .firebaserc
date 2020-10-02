@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "fitness-tracker-8388": {
+      "hosting": {
+        "fitness-training": [
+          "fitness-tracker-8388"
+        ]
+      }
+    }
+  }
+}

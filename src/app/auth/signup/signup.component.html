@@ -1,0 +1,30 @@
+<section>
+  <form fxLayout="column" fxLayoutAlign="center center" #signUpData="ngForm" (ngSubmit)="onSubmit(signUpData)">
+    <mat-form-field appearance="standard">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" required placeholder="Ex. abc@gmail.com" ngModel name="email" email #email="ngModel">
+      <mat-error *ngIf="email.hasError('required')">Email is required</mat-error>
+      <mat-error *ngIf="email.hasError('email')">Entered email is wrong</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="standard" hintLabel="Password should be at least 8 characters long">
+      <mat-label>Password</mat-label>
+      <input matInput [type]="hide ? 'password' : 'text'" required placeholder="Shubham@123" ngModel name="password"
+             minlength="8" #password="ngModel">
+      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-hint align="end"> {{ password.value?.length }} / 8</mat-hint>
+      <mat-error *ngIf="password.value?.length < 8">Password is too small</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="standard">
+      <mat-label>Enter or select a date</mat-label>
+      <input type="text" matInput placeholder="Ex. 1/1/2001" [matDatepicker]="picker">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-checkbox class="example-margin">Agree terms and conditions!</mat-checkbox>
+    <button mat-raised-button color="accent">Submit</button>
+  </form>
+</section>
+
