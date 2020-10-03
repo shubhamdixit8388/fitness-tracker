@@ -35,6 +35,7 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
     MatDialogModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent],

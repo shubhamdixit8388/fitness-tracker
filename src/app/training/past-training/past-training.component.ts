@@ -33,7 +33,9 @@ export class PastTrainingComponent implements OnInit {
   constructor(private trainingService: TrainingService) { }
 
   ngOnInit(): void {
-    this.trainings = this.trainingService.getCompletedOrCancelledTrainings();
+    this.trainingService.getCompletedOrCancelledTrainings();
+    this.trainingService.trainingsChange.subscribe(trainings => {
+      this.trainings = trainings;
+    });
   }
-
 }

@@ -1,45 +1,65 @@
 import { Injectable } from '@angular/core';
 import {Router} from '@angular/router';
-
 import { AuthData } from './auth-data.model';
-import {User} from './user.model';
 import {Subject} from 'rxjs';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {TrainingService} from '../training/training.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private user: User;
+  isAuthenticated = false;
   authChange = new Subject<boolean>();
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+              private angularFireAuth: AngularFireAuth,
+              private trainingService: TrainingService,
+              private snackBar: MatSnackBar) { }
 
   registerUser(authData: AuthData) {
-    this.user = {
-      email: authData.email,
-      userId: Math.round(Math.random() * 10000).toString()
-    };
-    this.authSuccessFully();
+    this.angularFireAuth.createUserWithEmailAndPassword(authData.email, authData.password)
+      .then(success => {
+        this.snackBar.open('User registered successfully!!!', null, {
+          duration: 3000
+        });
+      }).catch(error => {
+        this.snackBar.open(error.message, null, {
+          duration: 3000
+        });
+    });
   }
   login(authData: AuthData) {
-    this.user = {
-      email: authData.email,
-      userId: Math.round(Math.random() * 10000).toString()
-    };
-    this.authSuccessFully();
+    this.angularFireAuth.signInWithEmailAndPassword(authData.email, authData.password)
+      .then(success => {
+        console.log('User Logged In successfully!!! : ', success);
+        this.snackBar.open('User Logged In successfully!!!', null, {
+          duration: 3000
+        });
+      }).catch(error => {
+      this.snackBar.open(error.message, null, {
+        duration: 3000
+      });
+    });
+  }
+  inItAuthListener() {
+    this.angularFireAuth.authState.subscribe(state => {
+      if (state) {
+        this.isAuthenticated = true;
+        this.authChange.next(true);
+        this.router.navigate(['/training']);
+      } else {
+        this.trainingService.cancelSubscriptions();
+        this.isAuthenticated = false;
+        this.authChange.next(false);
+      }
+    });
   }
   logout() {
-    this.user = null;
-    this.authChange.next(false);
-  }
-  getUser() {
-    return { ...this.user };
+    this.angularFireAuth.signOut();
   }
   isAuth() {
-    return this.user != null;
-  }
-  authSuccessFully() {
-    this.authChange.next(true);
-    this.router.navigate(['/training']);
+    return this.isAuthenticated;
   }
 }

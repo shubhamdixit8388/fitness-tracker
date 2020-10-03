@@ -5,7 +5,7 @@
       <mat-card-content fxLayoutAlign="center">
         <mat-form-field appearance="fill">
           <mat-select placeholder="Select training" required ngModel name="training">
-            <mat-option *ngFor="let training of trainings | async" [value]="training.name">
+            <mat-option *ngFor="let training of trainings" [value]="training.id">
               {{training.name}}
             </mat-option>
           </mat-select>

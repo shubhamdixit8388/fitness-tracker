@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AuthService} from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,12 +7,10 @@ import {AngularFirestore} from '@angular/fire/firestore';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor(private firestore: AngularFirestore) {
+  constructor(private authService: AuthService) {
   }
   ngOnInit(): void {
-    this.firestore.collection('availableTrainings').valueChanges().subscribe(result => {
-      console.log('result: ', result);
-    });
+    this.authService.inItAuthListener();
   }
 }
 
