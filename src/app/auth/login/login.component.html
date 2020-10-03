@@ -26,6 +26,7 @@
       </button>
       <mat-error *ngIf="loginForm.get('password').getError('required')">Wrong Password</mat-error>
     </mat-form-field>
-    <button mat-raised-button color="accent" [disabled]="loginForm.invalid">Login</button>
+    <button *ngIf="!isLoading" mat-raised-button color="accent" [disabled]="loginForm.invalid">Login</button>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
   </form>
 </section>

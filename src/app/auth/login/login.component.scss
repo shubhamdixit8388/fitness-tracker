@@ -13,3 +13,9 @@ form {
 mat-form-field {
   width: 300px;
 }
+::ng-deep {
+  mat-spinner, mat-spinner svg {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}

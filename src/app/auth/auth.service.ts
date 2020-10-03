@@ -5,6 +5,7 @@ import {Subject} from 'rxjs';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {TrainingService} from '../training/training.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {UIService} from '../Shared/services/ui.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,31 +17,28 @@ export class AuthService {
   constructor(private router: Router,
               private angularFireAuth: AngularFireAuth,
               private trainingService: TrainingService,
-              private snackBar: MatSnackBar) { }
+              private uiService: UIService) { }
 
   registerUser(authData: AuthData) {
+    this.uiService.loadingStateChanged.next(true);
     this.angularFireAuth.createUserWithEmailAndPassword(authData.email, authData.password)
       .then(success => {
-        this.snackBar.open('User registered successfully!!!', null, {
-          duration: 3000
-        });
+        this.uiService.loadingStateChanged.next(false);
+        this.uiService.showSnackbar('User registered successfully!!!', null, 3000);
       }).catch(error => {
-        this.snackBar.open(error.message, null, {
-          duration: 3000
-        });
+        this.uiService.loadingStateChanged.next(false);
+        this.uiService.showSnackbar(error.message, null, 3000);
     });
   }
   login(authData: AuthData) {
+    this.uiService.loadingStateChanged.next(true);
     this.angularFireAuth.signInWithEmailAndPassword(authData.email, authData.password)
       .then(success => {
-        console.log('User Logged In successfully!!! : ', success);
-        this.snackBar.open('User Logged In successfully!!!', null, {
-          duration: 3000
-        });
+        this.uiService.loadingStateChanged.next(false);
+        this.uiService.showSnackbar('User Logged In successfully!!!', null, 3000);
       }).catch(error => {
-      this.snackBar.open(error.message, null, {
-        duration: 3000
-      });
+      this.uiService.loadingStateChanged.next(false);
+      this.uiService.showSnackbar(error.message, null, 3000);
     });
   }
   inItAuthListener() {

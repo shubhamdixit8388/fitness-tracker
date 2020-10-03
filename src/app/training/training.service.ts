@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Subject, Subscription} from 'rxjs';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {map} from 'rxjs/operators';
+import {UIService} from '../Shared/services/ui.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class TrainingService {
 
   firebaseSubscriptions: Subscription[] = [];
 
-  constructor(private firestore: AngularFirestore) {
+  constructor(private firestore: AngularFirestore,
+              private uiService: UIService) {
   }
 
   fetchTrainings() {
@@ -33,7 +35,9 @@ export class TrainingService {
       })).subscribe(trainings => {
         this.currentTrainings = trainings;
         this.trainingsChanged.next([...this.currentTrainings]);
-    }));
+    }, error => {
+        this.uiService.showSnackbar('Fetching available trainings failed', null, 3000);
+      }));
   }
 
   startTraining(selectedId: string) {
@@ -51,6 +55,7 @@ export class TrainingService {
     this.addDataToDatabase({...this.runningTraining, date: new Date(), state: 'completed'});
     this.runningTraining = null;
     this.trainingChanged.next(null);
+    this.uiService.showSnackbar('Training Completed', null, 3000);
   }
   abortTraining(progress: number) {
     this.addDataToDatabase({...this.runningTraining,
@@ -60,6 +65,7 @@ export class TrainingService {
       state: 'cancelled'});
     this.runningTraining = null;
     this.trainingChanged.next(null);
+    this.uiService.showSnackbar('Training Aborted', null, 3000);
   }
   getCompletedOrCancelledTrainings() {
     this.firebaseSubscriptions.push(this.firestore.collection('finishedTrainings').snapshotChanges()
@@ -77,7 +83,9 @@ export class TrainingService {
       }))
       .subscribe(trainings => {
       this.trainingsChange.next(trainings);
-    }));
+    }, error => {
+        this.uiService.showSnackbar('Fetching completed or aborted trainings failed', null, 3000);
+      }));
   }
   cancelSubscriptions() {
     this.firebaseSubscriptions.forEach(sub => sub.unsubscribe());
@@ -85,10 +93,8 @@ export class TrainingService {
   private addDataToDatabase(training: Training) {
     this.firestore.collection('finishedTrainings')
       .add(training)
-      .then(success => {
-        console.log('Training added to finishedTrainings successfully!!!');
-      }).catch(error => {
-        console.log('Training added to finishedTrainings successfully!!!');
+      .catch(error => {
+        this.uiService.showSnackbar('Failed to save data', null, 3000);
       });
   }
 }
